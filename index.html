@@ -1059,5 +1059,35 @@ html{scroll-behavior:smooth}
 </script>
 
 </div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Select all project item cards/links
+    const portfolioCards = document.querySelectorAll('.ds-work-list a, .ds-portfolio-item');
+    
+    portfolioCards.forEach(card => {
+      card.addEventListener('click', function() {
+        // Find the modal element
+        const modal = document.querySelector('.modal, #projectModal');
+        if (!modal) return;
+
+        // Get image source and title from the specific card clicked
+        const cardImg = this.querySelector('img');
+        const cardTitle = this.querySelector('h3, h4, .title');
+        
+        // Target modal elements
+        const modalImg = modal.querySelector('.modal-body img, .modal-img');
+        const modalTitle = modal.querySelector('.modal-title');
+
+        // Update modal content dynamically with the clicked card's data
+        if (cardImg && modalImg) {
+          modalImg.src = cardImg.src;
+        }
+        if (cardTitle && modalTitle) {
+          modalTitle.textContent = cardTitle.textContent;
+        }
+      });
+    });
+  });
+</script>
 </body>
 </html>
