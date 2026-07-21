@@ -948,7 +948,7 @@ html{scroll-behavior:smooth}
     var h=document.documentElement.scrollHeight-window.innerHeight;
     prog.style.width=(h>0?(s/h*100):0)+'%';
   }
-  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();  
 
   /* mobile menu */
   var burger=document.getElementById('dsBurger'),mob=document.getElementById('dsMobile'),open=false;
@@ -1030,21 +1030,54 @@ html{scroll-behavior:smooth}
   }
 
   /* lightbox */
-  var lb=document.getElementById('dsLightbox'),lbT=document.getElementById('dsLbTitle'),
+ var lb=document.getElementById('dsLightbox'),lbT=document.getElementById('dsLbTitle'),
       lbD=document.getElementById('dsLbDesc'),lbImg=document.getElementById('dsLbImg'),lbC=document.getElementById('dsLbClose');
-  function openLb(t,d,src){lbT.textContent=t;lbD.textContent=d;
-    if(src){lbImg.outerHTML='<img id="dsLbImg" src="'+src+'" alt="'+t+'" style="width:100%;height:100%;object-fit:cover">';}
-    lb.classList.add('ds-open');document.body.style.overflow='hidden';}
-  function closeLb(){lb.classList.remove('ds-open');document.body.style.overflow='';}
-  root.querySelectorAll('[data-lb]').forEach(function(el){
-    function act(){var src='';var bgEl=el.querySelector('.ds-gimg,.ds-mimg');if(bgEl){var bg=getComputedStyle(bgEl).backgroundImage;var mm=bg.match(/url\((['"]?)(.*?)\1\)/);if(mm)src=mm[2];}var img=el.querySelector('img');if(img)src=img.src;openLb(el.getAttribute('data-lb'),el.getAttribute('data-lbd'),src);}
-    el.addEventListener('click',act);
-    el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();act();}});
-  });
-  lbC.addEventListener('click',closeLb);
-  lb.addEventListener('click',function(e){if(e.target===lb)closeLb();});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLb();});
+  
+  function openLb(t,d,src){
+    if(lbT) lbT.textContent=t||'';
+    if(lbD) lbD.textContent=d||'';
+    
+    // Select current dsLbImg dynamically in case it was modified
+    var imgContainer = document.getElementById('dsLbImg');
+    if(imgContainer){
+      if(src){
+        imgContainer.outerHTML='<img id="dsLbImg" src="'+src+'" alt="'+t+'" style="width:100%;height:100%;object-fit:cover">';
+      } else {
+        imgContainer.outerHTML='<div id="dsLbImg" class="ds-ph" style="width:100%;height:100%">Preview</div>';
+      }
+    }
+    
+    if(lb) lb.classList.add('ds-open');
+    document.body.style.overflow='hidden';
+  }
 
+  function closeLb(){
+    if(lb) lb.classList.remove('ds-open');
+    document.body.style.overflow='';
+  }
+
+  if(root){
+    root.querySelectorAll('[data-lb]').forEach(function(el){
+      function act(){
+        var src='';
+        var bgEl=el.querySelector('.ds-gimg,.ds-mimg');
+        if(bgEl){
+          var bg=getComputedStyle(bgEl).backgroundImage;
+          var mm=bg.match(/url\((['"]?)(.*?)\1\)/);
+          if(mm) src=mm[2];
+        }
+        var img=el.querySelector('img');
+        if(img) src=img.src;
+        openLb(el.getAttribute('data-lb'),el.getAttribute('data-lbd'),src);
+      }
+      el.addEventListener('click',act);
+      el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();act();}});
+    });
+  }
+
+  if(lbC) lbC.addEventListener('click',closeLb);
+  if(lb) lb.addEventListener('click',function(e){if(e.target===lb)closeLb();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLb();});
   /* contact form -> WhatsApp */
   var form=document.getElementById('dsForm');
   if(form){form.addEventListener('submit',function(e){e.preventDefault();
@@ -1059,35 +1092,5 @@ html{scroll-behavior:smooth}
 </script>
 
 </div>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Select all project item cards/links
-    const portfolioCards = document.querySelectorAll('.ds-work-list a, .ds-portfolio-item');
-    
-    portfolioCards.forEach(card => {
-      card.addEventListener('click', function() {
-        // Find the modal element
-        const modal = document.querySelector('.modal, #projectModal');
-        if (!modal) return;
-
-        // Get image source and title from the specific card clicked
-        const cardImg = this.querySelector('img');
-        const cardTitle = this.querySelector('h3, h4, .title');
-        
-        // Target modal elements
-        const modalImg = modal.querySelector('.modal-body img, .modal-img');
-        const modalTitle = modal.querySelector('.modal-title');
-
-        // Update modal content dynamically with the clicked card's data
-        if (cardImg && modalImg) {
-          modalImg.src = cardImg.src;
-        }
-        if (cardTitle && modalTitle) {
-          modalTitle.textContent = cardTitle.textContent;
-        }
-      });
-    });
-  });
-</script>
 </body>
 </html>
