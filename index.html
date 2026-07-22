@@ -159,8 +159,8 @@ html{scroll-behavior:smooth}
   background:var(--grad);background-size:200% 200%;-webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;animation:ds-grad 6s ease infinite}
 .ds-pre-bar{width:min(240px,60vw);height:2px;background:rgba(255,255,255,.1);overflow:hidden;border-radius:2px}
-.ds-pre-bar i{display:block;height:100%;width:0;background:var(--grad);animation:ds-load 1.6s var(--ease) forwards}
-@keyframes ds-load{to{width:100%}}
+.ds-pre-bar i{display:block;height:100%;width:100%;background:var(--grad);transform-origin:left;transform:scaleX(0);animation:ds-load 1.6s var(--ease) forwards}
+@keyframes ds-load{to{transform:scaleX(1)}}
 
 /* particles canvas */
 #ds-particles{position:absolute;inset:0;z-index:1;pointer-events:none}
@@ -220,8 +220,8 @@ html{scroll-behavior:smooth}
 .ds-scroll-cue{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:3;
   font-family:var(--data);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);
   display:flex;flex-direction:column;align-items:center;gap:10px}
-.ds-scroll-cue::after{content:"";width:1px;height:38px;background:linear-gradient(var(--cyan),transparent);animation:ds-cue 2s ease infinite}
-@keyframes ds-cue{0%,100%{opacity:.3;height:24px}50%{opacity:1;height:38px}}
+.ds-scroll-cue::after{content:"";width:1px;height:38px;background:linear-gradient(var(--cyan),transparent);transform-origin:top;animation:ds-cue 2s ease infinite}
+@keyframes ds-cue{0%,100%{opacity:.3;transform:scaleY(0.63)}50%{opacity:1;transform:scaleY(1)}}
 
 /* glass card base */
 .ds-card{background:var(--glass);border:1px solid var(--line);border-radius:18px;
